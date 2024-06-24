@@ -1,4 +1,8 @@
-const {Client, IntentsBitField} = require('discord.js');
+require('dotenv').config();
+const {Client, IntentsBitField, EmbedBuilder} = require('discord.js');
+const eventHandler = require('./handlers/eventHandler');
+
+let cantidadApostada = 0;
 
 const client = new Client({
     intents: [
@@ -9,6 +13,11 @@ const client = new Client({
     ]
 });
 
+eventHandler(client);
+
+client.login(process.env.TOKEN);
+
+/*
 client.on('ready',(c) =>{
     console.log(`${c.user.tag} is online`);
 });
@@ -18,75 +27,27 @@ client.on('messageCreate',(message) => {
     {
         return;
     }
-
-    leerMensaje(message);
 });
 
-function leerMensaje(message)
-{
-    let palabras = message.content.split(/\s+/);
+client.on('interactionCreate', (interaction) => {
+    if(!interaction.isChatInputCommand()) return;
 
-    if(palabras[0] != "csn")
+    if(interaction.commandName === 'apostar')
     {
-        return;
-    }
+        const fichasApostadas = interaction.options.get('fichas').value;
 
-    if(typeof palabras[1] === "undefined")
+        cantidadApostada+=fichasApostadas;
+
+        interaction.reply("Has apostado "+fichasApostadas);
+    }
+    else if(interaction.commandName === 'puntuaciones')
     {
-        message.reply("Lista de comandos:\nbet\nap");
-    }
-    else if(palabras[1]==="apostar")
-    {
-        funcionBet(palabras.slice(2), message);
-    }
-    else if(palabras[1]==="fichas")
-    {
-        funcionFichas(message);
-    }
-    else if(palabras[1]==="pp")
-    {
-        funcionPp(message);
-    }
-    else
-    {
-        message.reply("Comando no reconocido");
-    }
+        const embed = new EmbedBuilder()
+            .setTitle("Puntuaciones")
+            .setDescription("- 56\n- 33\nFichas apostadas: "+cantidadApostada)
+            .setColor('Yellow');
 
-}
-
-function funcionBet(palabrasBet, message)
-{
-    if(typeof palabrasBet[0] ===  "undefined")
-    {
-        message.reply("Se debe apostar un numero entero positivo");
-        return;
-    
+        interaction.reply({embeds:[embed]});
     }
-    if(typeof palabrasBet[1] !==  "undefined")
-    {
-        message.reply("Se debe apostar un numero entero positivo");
-        return;
-    }
-
-    if(palabrasBet[0].search(/^\d+$/) == -1)
-    {
-        message.reply("Se debe apostar un numero entero positivo");
-        return;
-    }
-
-    fichas = parseInt(palabrasBet[0]);
-
-    message.reply("Has apostado " + fichas);
-}
-
-function funcionPp(message)
-{
-    message.reply("polla");
-}
-
-function funcionPp(message)
-{
-    message.reply("polla");
-}
-
-client.login("MTIzMjIzODk0NDExNzE5ODkxOA.GI_qHj.COzNx7TqC8r-u9TfhlAbgOLYmhRnw7AK-s2Vmg");
+});
+*/
