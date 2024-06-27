@@ -3,11 +3,13 @@ module.exports = async (client,guildId) =>{
 
     if (guildId)
     {
+        console.log("Revisando comandos de test server");
         const guild = await client.guilds.fetch(guildId);
         applicationCommands = guild.commands;
     }
     else
     {
+        console.log("Revisando comandos globales");
         applicationCommands = await client.application.commands;
     }
 

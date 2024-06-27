@@ -2,8 +2,6 @@ require('dotenv').config();
 const {Client, IntentsBitField, EmbedBuilder} = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 
-let cantidadApostada = 0;
-
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
