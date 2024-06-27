@@ -9,53 +9,97 @@ class blackjack
             
             this.dealers = {};
             this.fichasJugadores = {};
+            this.estadoJuego = {};
+            this.numeroRonda = {};
+            
+            //ESTADOS
+            //0 = uniendose
+            //1 = apostando
+            //2 = cartas
         }
 
         return blackjack.instance;
     }
 
-    iniciarJuego(idDealer,channelId)
+    iniciarJuego(idDealer,idCanal)
     {
-        this.dealers[channelId] = idDealer;
+        this.dealers[idCanal] = idDealer;
+        this.fichasJugadores[idCanal] = {};
+        this.estadoJuego[idCanal] = 0;
+        this.numeroRonda[idCanal] = 0;
+    }
+    
+    terminarJuego(idCanal)
+    {
+        delete this.dealers[idCanal];
+        delete this.fichasJugadores[idCanal];
+        delete this.estadoJuego[idCanal];
+        delete this.numeroRonda[idCanal];
+    }
+    
+    unirseAJuego(idUsuario,idCanal)
+    {
+        this.fichasJugadores[idCanal][idUsuario] = 0;
     }
 
-    juegoIniciado(channelId)
+    comenzarJuego(idCanal, fichasIniciales)
     {
-        if(this.dealers[channelId])
+        this.estadoJuego[idCanal] = 1;
+        if(fichasIniciales<=0)
         {
-            return true;
+            fichasIniciales = 100;
         }
-        return false;
+
+        for(const idJugador in this.fichasJugadores[idCanal])
+        {
+            this.fichasJugadores[idCanal][idJugador] = fichasIniciales;
+        }
     }
 
-    apostarFichas(idUsuario,idCanal, numeroFichas)
+    subirRonda(idCanal)
     {
-        if (!this.fichasJugadores[idCanal])
-        {
-            this.fichasJugadores[idCanal] = {};
-        }
-        
-        if (!this.fichasJugadores[idCanal][idUsuario])
-        {
-            this.fichasJugadores[idCanal][idUsuario] = 0;
-        }
-        
+        return this.numeroRonda[idCanal]+=1;
+    }
+    
+    ananirFichas(idUsuario,idCanal, numeroFichas)
+    {   
         this.fichasJugadores[idCanal][idUsuario] += numeroFichas;
     }
-
-    verFichasApostadas(idCanal,idUsuario)
+    
+    verFichasJugador(idCanal,idUsuario)
     {
         return this.fichasJugadores[idCanal][idUsuario];
     }
-}
-
-class instanciaBlackjack
-{
-    constructor(canalId, dealerId)
+    
+    estaJuegoIniciado(idCanal)
     {
-        this.IdCanal = canalId;
-        this.IdDealer = dealerId;
-        this.fichasUsuarios = {}
+        if(this.dealers[idCanal])
+            return true;
+        return false;
+    }
+
+    esDealer(idUsuario,idCanal)
+    {
+        if(idUsuario === this.dealers[idCanal])
+            return true;
+        return false;
+    }
+
+    estaUsuarioEnJuego(idUsuario,idCanal)
+    {
+        if(typeof this.fichasJugadores[idCanal][idUsuario] === 'undefined')
+            return false;
+        return true;
+    }
+
+    verEstadoJuego(idCanal)
+    {
+        return this.estadoJuego[idCanal];
+    }
+
+    verNumeroJugadores(idCanal)
+    {
+        return this.fichasJugadores[idCanal];
     }
 }
 
@@ -63,3 +107,23 @@ const blackjackGame = new blackjack();
 //Object.freeze(blackjackGame);
 
 module.exports = blackjackGame;
+
+/*
+/jugar #inicia el juego en el canal y lo convierte en dealer
+
+/unirse #lo ponen todos los jugadores que vayan a jugar
+
+-uniendose
+-apostando
+-poniendo cartas
+
+/iniciar 100 #dealer inicia el juego
+
+/apostar 10 #cada jugador apuesta la cantidad que quiere.
+
+/cartas 20 #ya que todos apostaron. cada jugador pone lo que sacó. cuando todos pusieron, el dealer pone lo que le salió a él y marca el final de la ronda. 
+
+/terminar #el dealer lo pone en cualquier momento para acabar el juego. sale el leaderboard
+
+/instrucciones
+*/
