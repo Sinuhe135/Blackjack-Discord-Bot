@@ -1,5 +1,5 @@
 const {ApplicationCommandOptionType} = require('discord.js');
-const blackjackGame = require('../../blackjack.js')
+const blackjackGame = require('../../blackjackUtils/blackjack.js');
 
 module.exports = {
     name: 'jugar',
@@ -24,6 +24,5 @@ module.exports = {
         blackjackGame.iniciarJuego(idUsuario,idCanal);
 
         interaction.reply(`Se ha iniciado un juego de blackjack\n${interaction.user} es el dealer\n\nUtilizar /comenzar para empezar el juego\nUtilizar /unirse para entrar`);
-
     },
 };

@@ -1,5 +1,6 @@
 const {ApplicationCommandOptionType} = require('discord.js');
-const blackjackGame = require('../../blackjack.js')
+const blackjackGame = require('../../blackjackUtils/blackjack.js');
+const comenzarCartas = require('../../blackjackUtils/comenzarCartas.js')
 
 module.exports = {
     name: 'apostar',
@@ -57,9 +58,42 @@ module.exports = {
             });
             return;
         }
-        
-        blackjackGame.ananirFichas(idUsuario,idCanal,numeroFichas);
 
-        interaction.reply(`${interaction.user} ha apostado ${numeroFichas}\n${interaction.user} en total ha apostado ${blackjackGame.verFichasJugador(idCanal,idUsuario)}`);
+        if(blackjackGame.verSiAposto(idUsuario,idCanal))
+        {
+            interaction.reply({
+                content: "Ya has apostado",
+                ephemeral: true,
+            });
+            return;
+        }
+
+        if(blackjackGame.verFichasJugador(idUsuario,idCanal) < numeroFichas)
+        {
+            interaction.reply({
+                content: "No tienes suficientes fichas",
+                ephemeral: true,
+            });
+            return;
+        }
+
+        if(numeroFichas <= 0)
+        {
+            interaction.reply({
+                content: "Debes apostar al menos una ficha",
+                ephemeral: true,
+            });
+            return;
+        }
+        
+        blackjackGame.apostarFichas(idUsuario,idCanal,numeroFichas);
+
+
+        interaction.reply(`${interaction.user} ha apostado ${numeroFichas} fichas`);
+
+        if(blackjackGame.verNumeroJugadores(idCanal) === blackjackGame.verNumeroJugadoresApostaron(idCanal))
+        {
+            comenzarCartas(client,idCanal);
+        }
     },
 };

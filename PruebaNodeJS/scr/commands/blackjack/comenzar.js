@@ -1,5 +1,6 @@
 const {ApplicationCommandOptionType} = require('discord.js');
-const blackjackGame = require('../../blackjack.js')
+const blackjackGame = require('../../blackjackUtils/blackjack.js')
+const comenzarRonda = require('../../blackjackUtils/comenzarRonda.js')
 
 module.exports = {
     name: 'comenzar',
@@ -49,7 +50,7 @@ module.exports = {
             return;
         }
         
-        if(Object.keys(blackjackGame.verNumeroJugadores(idCanal)).length === 0)
+        if(blackjackGame.verNumeroJugadores(idCanal) <= 0)
             {
                 //interaction.reply("Solo el dealer puede terminar la partida");
                 interaction.reply({
@@ -70,16 +71,24 @@ module.exports = {
                 });
                 return;
             }
+            else if(numeroFichas >1000001)
+            {
+                interaction.reply({
+                    content: "El numero inicial de fichas no puede ser mayor a 1 000 000",
+                    ephemeral: true,
+                });
+                return;
+            }
         }
 
         blackjackGame.comenzarJuego(idCanal, numeroFichas);
-
         
         if(numeroFichas === 0)
-            interaction.reply(`${interaction.user} ha comenzado la partida con **100** fichas para cada jugador\n\n*Ronda ${blackjackGame.subirRonda(idCanal)}*. Hagan sus apuestas`);
+            interaction.reply(`${interaction.user} ha comenzado la partida con **100** fichas para cada jugador`);
         else
-            interaction.reply(`${interaction.user} ha comenzado la partida con **${numeroFichas}** fichas para cada jugador\n\n*Ronda ${blackjackGame.subirRonda(idCanal)}*. Hagan sus apuestas`);
+            interaction.reply(`${interaction.user} ha comenzado la partida con **${numeroFichas}** fichas para cada jugador`);
 
-            
+        comenzarRonda(client,idCanal);
+
         },
     };

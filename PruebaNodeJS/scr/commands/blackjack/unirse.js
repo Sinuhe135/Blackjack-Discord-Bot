@@ -1,5 +1,5 @@
 const {ApplicationCommandOptionType} = require('discord.js');
-const blackjackGame = require('../../blackjack.js')
+const blackjackGame = require('../../blackjackUtils/blackjack.js')
 
 module.exports = {
     name: 'unirse',
