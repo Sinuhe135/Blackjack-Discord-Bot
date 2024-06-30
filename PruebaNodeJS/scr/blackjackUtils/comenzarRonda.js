@@ -5,6 +5,6 @@ module.exports = (client,idCanal) =>{
 
     setTimeout(() => {
         blackjackGame.cambiarEstadoJuego(idCanal,1);
-        canal.send(`*Ronda ${blackjackGame.subirRonda(idCanal)}*\n\nUtilizar /apostar para apostar fichas`);
+        canal.send(`*Ronda ${blackjackGame.subirRonda(idCanal)}*\n\nUtilizar /apostar para apostar fichas\nUtilizar /terminar para terminar la partida`);
     },2000);
 };

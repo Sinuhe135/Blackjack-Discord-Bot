@@ -8,8 +8,11 @@ class blackjack
             blackjack.instance = this;
             
             this.dealers = {};
+            this.gananciasDealer = {};
             this.fichasJugadores = {};
             this.fichasApostadas = {};
+            this.cantidadCartas = {};
+            this.cantidadCartasDealer = {};
             this.estadoJuego = {};
             this.numeroRonda = {};
             this.ultimaInteraccion = {};
@@ -26,8 +29,11 @@ class blackjack
     iniciarJuego(idDealer,idCanal)
     {
         this.dealers[idCanal] = idDealer;
+        this.gananciasDealer[idCanal] = 0;
         this.fichasJugadores[idCanal] = {};
         this.fichasApostadas[idCanal] = {};
+        this.cantidadCartas[idCanal] = {};
+        this.cantidadCartasDealer[idCanal] = 0;
         this.estadoJuego[idCanal] = 0;
         this.numeroRonda[idCanal] = 0;
 
@@ -37,8 +43,11 @@ class blackjack
     terminarJuego(idCanal)
     {
         delete this.dealers[idCanal];
+        delete this.gananciasDealer[idCanal];
         delete this.fichasJugadores[idCanal];
         delete this.fichasApostadas[idCanal];
+        delete this.cantidadCartas[idCanal];
+        delete this.cantidadCartasDealer[idCanal];
         delete this.estadoJuego[idCanal];
         delete this.numeroRonda[idCanal];
 
@@ -87,10 +96,20 @@ class blackjack
     {   
         this.fichasJugadores[idCanal][idUsuario] += numeroFichas;
     }
+
+    ananirGananciasDealer(idCanal,cantidad)
+    {
+        return this.gananciasDealer[idCanal]+= cantidad;
+    }
     
     verFichasJugador(idUsuario,idCanal)
     {
         return this.fichasJugadores[idCanal][idUsuario];
+    }
+
+    verGananciasDealer(idCanal)
+    {
+        return this.gananciasDealer[idCanal];
     }
     
     apostarFichas(idUsuario,idCanal, numeroFichas)
@@ -99,19 +118,56 @@ class blackjack
 
         this.refrescarUltimaInteraccion(idCanal);
     }
+
+    indicarCantidadCartas(idUsuario,idCanal, cantidad)
+    {   
+        this.cantidadCartas[idCanal][idUsuario] = cantidad;
+
+        this.refrescarUltimaInteraccion(idCanal);
+    }
+
+    indicarCantidadCartasDealer(idCanal, cantidad)
+    {   
+        this.cantidadCartasDealer[idCanal] = cantidad;
+
+        this.refrescarUltimaInteraccion(idCanal);
+    }
+
+    reiniciarRonda(idCanal)
+    {   
+        delete this.cantidadCartas[idCanal];
+        this.cantidadCartas[idCanal] = {};
+        delete this.fichasApostadas[idCanal];
+        this.fichasApostadas[idCanal] = {};
+        //ver si se puede simplificar
+
+        this.cantidadCartasDealer[idCanal] = 0;
+    }
     
     verFichasApostadas(idUsuario,idCanal)
     {
         return this.fichasApostadas[idCanal][idUsuario];
     }
-
+    
+    verCantidadCartasDealer(idCanal)
+    {
+        return this.cantidadCartasDealer[idCanal];
+    }
+    
     verSiAposto(idUsuario,idCanal)
     {
         if(this.fichasApostadas[idCanal][idUsuario])
             return true;
         return false;
     }
-
+    
+    verSiCartas(idUsuario,idCanal)
+    {
+        if(this.cantidadCartas[idCanal][idUsuario])
+            return true;
+        return false;
+    }
+    
     verUltimaInteraccion()
     {
         return this.ultimaInteraccion;
@@ -123,40 +179,55 @@ class blackjack
             return true;
         return false;
     }
-
+    
+    verDealer(idCanal)
+    {
+        return this.dealers[idCanal];
+    }
+    
     esDealer(idUsuario,idCanal)
     {
         if(idUsuario === this.dealers[idCanal])
             return true;
         return false;
     }
-
+    
     estaUsuarioEnJuego(idUsuario,idCanal)
     {
         if(typeof this.fichasJugadores[idCanal][idUsuario] === 'undefined')
             return false;
         return true;
     }
-
+    
     verEstadoJuego(idCanal)
     {
         return this.estadoJuego[idCanal];
     }
-
+    
     verNumeroJugadores(idCanal)
     {
         return Object.keys(this.fichasJugadores[idCanal]).length;
     }
     
-        verNumeroJugadoresApostaron(idCanal)
-        {
-            return Object.keys(this.fichasApostadas[idCanal]).length;
-        }
+    verNumeroJugadoresApostaron(idCanal)
+    {
+        return Object.keys(this.fichasApostadas[idCanal]).length;
+    }
     
-        verApuestasCanal(idCanal)
-        {
-            return this.fichasApostadas[idCanal];
-        }
+    verNumeroJugadoresCartas(idCanal)
+    {
+        return Object.keys(this.cantidadCartas[idCanal]).length;
+    }
+    
+    verApuestasCanal(idCanal)
+    {
+        return this.fichasApostadas[idCanal];
+    }
+    
+    verCantidadCartasCanal(idCanal)
+    {
+        return this.cantidadCartas[idCanal];
+    }
 }
 
 const blackjackGame = new blackjack();
