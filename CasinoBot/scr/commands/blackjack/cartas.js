@@ -58,6 +58,16 @@ module.exports = {
             return;
         }
 
+        
+        if(blackjackGame.verFichasJugador(idUsuario,idCanal) === 0)
+        {
+            interaction.reply({
+                content: "Ya has sido eliminado por quedarte sin fichas",
+                ephemeral: true,
+            });
+            return;
+        }
+
         if(cantidadCartas < 2 || cantidadCartas > 100)
         {
             interaction.reply({
@@ -69,7 +79,7 @@ module.exports = {
 
         if(blackjackGame.esDealer(idUsuario,idCanal))
         {
-            if(blackjackGame.verNumeroJugadores(idCanal) === blackjackGame.verNumeroJugadoresCartas(idCanal))
+            if((blackjackGame.verNumeroJugadores(idCanal)-blackjackGame.verCantidadJugadoresCero(idCanal)) === blackjackGame.verNumeroJugadoresCartas(idCanal))
             {
                 blackjackGame.indicarCantidadCartasDealer(idCanal,cantidadCartas);
                 interaction.reply(`${interaction.user} ha sacado ${cantidadCartas} en sus cartas`);
@@ -91,7 +101,7 @@ module.exports = {
         
         interaction.reply(`${interaction.user} ha sacado ${cantidadCartas} en sus cartas`);
         
-        if(blackjackGame.verNumeroJugadores(idCanal) === blackjackGame.verNumeroJugadoresCartas(idCanal))
+        if((blackjackGame.verNumeroJugadores(idCanal)-blackjackGame.verCantidadJugadoresCero(idCanal)) === blackjackGame.verNumeroJugadoresCartas(idCanal))
         {
             comenzarCartasDealer(client,idCanal);
         }

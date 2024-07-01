@@ -68,6 +68,15 @@ module.exports = {
             return;
         }
 
+        if(blackjackGame.verFichasJugador(idUsuario,idCanal) === 0)
+        {
+            interaction.reply({
+                content: "Ya has sido eliminado por quedarte sin fichas",
+                ephemeral: true,
+            });
+            return;
+        }
+
         if(blackjackGame.verFichasJugador(idUsuario,idCanal) < numeroFichas)
         {
             interaction.reply({
@@ -88,10 +97,12 @@ module.exports = {
         
         blackjackGame.apostarFichas(idUsuario,idCanal,numeroFichas);
 
+        if(numeroFichas === blackjackGame.verFichasJugador(idUsuario,idCanal))
+            interaction.reply(`${interaction.user} ha apostado **todas sus fichas**`);
+        else
+            interaction.reply(`${interaction.user} ha apostado ${numeroFichas} fichas`);
 
-        interaction.reply(`${interaction.user} ha apostado ${numeroFichas} fichas`);
-
-        if(blackjackGame.verNumeroJugadores(idCanal) === blackjackGame.verNumeroJugadoresApostaron(idCanal))
+        if((blackjackGame.verNumeroJugadores(idCanal)-blackjackGame.verCantidadJugadoresCero(idCanal)) === blackjackGame.verNumeroJugadoresApostaron(idCanal))
         {
             comenzarCartas(client,idCanal);
         }

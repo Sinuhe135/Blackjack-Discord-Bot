@@ -54,6 +54,14 @@ class blackjack
         delete this.ultimaInteraccion[idCanal];
     }
 
+    reiniciarRonda(idCanal)
+    {   
+        this.cantidadCartas[idCanal] = {};
+        this.fichasApostadas[idCanal] = {};
+
+        this.cantidadCartasDealer[idCanal] = 0;
+    }
+
     refrescarUltimaInteraccion(idCanal)
     {
         this.ultimaInteraccion[idCanal] = Date.now();
@@ -64,9 +72,8 @@ class blackjack
         this.fichasJugadores[idCanal][idUsuario] = 0;
 
         this.refrescarUltimaInteraccion(idCanal);
-        
     }
-
+    
     comenzarJuego(idCanal, fichasIniciales)
     {
         if(fichasIniciales<=0)
@@ -78,6 +85,27 @@ class blackjack
         {
             this.fichasJugadores[idCanal][idJugador] = fichasIniciales;
         }
+
+        this.refrescarUltimaInteraccion(idCanal);
+    }
+    
+    apostarFichas(idUsuario,idCanal, numeroFichas)
+    {   
+        this.fichasApostadas[idCanal][idUsuario] = numeroFichas;
+
+        this.refrescarUltimaInteraccion(idCanal);
+    }
+
+    indicarCantidadCartas(idUsuario,idCanal, cantidad)
+    {   
+        this.cantidadCartas[idCanal][idUsuario] = cantidad;
+
+        this.refrescarUltimaInteraccion(idCanal);
+    }
+
+    indicarCantidadCartasDealer(idCanal, cantidad)
+    {   
+        this.cantidadCartasDealer[idCanal] = cantidad;
 
         this.refrescarUltimaInteraccion(idCanal);
     }
@@ -102,9 +130,19 @@ class blackjack
         return this.gananciasDealer[idCanal]+= cantidad;
     }
     
-    verFichasJugador(idUsuario,idCanal)
+    verFichasCanal(idCanal)
     {
-        return this.fichasJugadores[idCanal][idUsuario];
+        return this.fichasJugadores[idCanal];
+    }
+
+    verApuestasCanal(idCanal)
+    {
+        return this.fichasApostadas[idCanal];
+    }
+    
+    verCantidadCartasCanal(idCanal)
+    {
+        return this.cantidadCartas[idCanal];
     }
 
     verGananciasDealer(idCanal)
@@ -112,36 +150,22 @@ class blackjack
         return this.gananciasDealer[idCanal];
     }
     
-    apostarFichas(idUsuario,idCanal, numeroFichas)
-    {   
-        this.fichasApostadas[idCanal][idUsuario] = numeroFichas;
-
-        this.refrescarUltimaInteraccion(idCanal);
+    verFichasJugador(idUsuario,idCanal)
+    {
+        return this.fichasJugadores[idCanal][idUsuario];
     }
-
-    indicarCantidadCartas(idUsuario,idCanal, cantidad)
-    {   
-        this.cantidadCartas[idCanal][idUsuario] = cantidad;
-
-        this.refrescarUltimaInteraccion(idCanal);
-    }
-
-    indicarCantidadCartasDealer(idCanal, cantidad)
-    {   
-        this.cantidadCartasDealer[idCanal] = cantidad;
-
-        this.refrescarUltimaInteraccion(idCanal);
-    }
-
-    reiniciarRonda(idCanal)
-    {   
-        delete this.cantidadCartas[idCanal];
-        this.cantidadCartas[idCanal] = {};
-        delete this.fichasApostadas[idCanal];
-        this.fichasApostadas[idCanal] = {};
-        //ver si se puede simplificar
-
-        this.cantidadCartasDealer[idCanal] = 0;
+    
+    verCantidadJugadoresCero(idCanal)
+    {
+        let cantidad = 0;
+        for(const idUsuario in this.fichasJugadores[idCanal])
+        {
+            if(this.fichasJugadores[idCanal][idUsuario] === 0)
+            {
+                cantidad++;
+            }
+        }
+        return cantidad;
     }
     
     verFichasApostadas(idUsuario,idCanal)
@@ -219,15 +243,6 @@ class blackjack
         return Object.keys(this.cantidadCartas[idCanal]).length;
     }
     
-    verApuestasCanal(idCanal)
-    {
-        return this.fichasApostadas[idCanal];
-    }
-    
-    verCantidadCartasCanal(idCanal)
-    {
-        return this.cantidadCartas[idCanal];
-    }
 }
 
 const blackjackGame = new blackjack();

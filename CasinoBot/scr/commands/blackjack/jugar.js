@@ -1,4 +1,4 @@
-const {ApplicationCommandOptionType} = require('discord.js');
+const {ApplicationCommandOptionType,EmbedBuilder} = require('discord.js');
 const blackjackGame = require('../../blackjackUtils/blackjack.js');
 
 module.exports = {
@@ -23,6 +23,13 @@ module.exports = {
         
         blackjackGame.iniciarJuego(idUsuario,idCanal);
 
-        interaction.reply(`Se ha iniciado un juego de blackjack\n${interaction.user} es el dealer\n\nUtilizar /comenzar para empezar el juego\nUtilizar /unirse para entrar`);
+        const embed = new EmbedBuilder()
+            .setTitle("Se ha iniciado un juego de blackjack")
+            .setDescription(`${interaction.user} es el dealer\n\nUtilizar /unirse para entrar\nUtilizar /comenzar para empezar el juego`)
+            .setColor('Red');
+
+        interaction.reply({embeds:[embed]});
+
+        //interaction.reply(``);
     },
 };
