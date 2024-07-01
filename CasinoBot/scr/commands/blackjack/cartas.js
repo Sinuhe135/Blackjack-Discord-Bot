@@ -5,20 +5,20 @@ const terminarRonda = require('../../blackjackUtils/terminarRonda.js');
 
 module.exports = {
     name: 'cartas',
-    description: 'Indicar cuánto tienes en tus cartas',
+    description: 'Indicar la suma de tus cartas',
     //devOnly: Boolean,
     //testOnly: Boolean,
     options:[
         {
-            name: "cantidad",
-            description:"cantidad en tus cartas",
+            name: "suma",
+            description:"suma de tus cartas",
             type: ApplicationCommandOptionType.Integer,
             require: true,
         },
     ],
 
     callback: (client,interaction) => {
-        const cantidadCartas = interaction.options.get('cantidad').value;
+        const cantidadCartas = interaction.options.get('suma').value;
         const idUsuario = interaction.user.id;
         const idCanal = interaction.channel.id;
 
@@ -52,7 +52,7 @@ module.exports = {
         if(blackjackGame.verSiCartas(idUsuario,idCanal))
         {
             interaction.reply({
-                content: "Ya has indicado la cantidad de tus cartas",
+                content: "Ya has indicado la suma de tus cartas",
                 ephemeral: true,
             });
             return;
@@ -71,7 +71,7 @@ module.exports = {
         if(cantidadCartas < 2 || cantidadCartas > 100)
         {
             interaction.reply({
-                content: "Indicar una cantidad posible",
+                content: "Indicar una suma posible",
                 ephemeral: true,
             });
             return;
@@ -82,13 +82,13 @@ module.exports = {
             if((blackjackGame.verNumeroJugadores(idCanal)-blackjackGame.verCantidadJugadoresCero(idCanal)) === blackjackGame.verNumeroJugadoresCartas(idCanal))
             {
                 blackjackGame.indicarCantidadCartasDealer(idCanal,cantidadCartas);
-                interaction.reply(`${interaction.user} ha sacado ${cantidadCartas} en sus cartas`);
+                interaction.reply(`${interaction.user} ha sumado ${cantidadCartas} con sus cartas`);
                 terminarRonda(client,idCanal);
             }
             else
             {
                 interaction.reply({
-                    content: "No han indicado su cantidad todos los jugadores",
+                    content: "No han indicado su suma todos los jugadores",
                     ephemeral: true,
                 });
             }
@@ -99,7 +99,7 @@ module.exports = {
         blackjackGame.indicarCantidadCartas(idUsuario,idCanal,cantidadCartas);
         
         
-        interaction.reply(`${interaction.user} ha sacado ${cantidadCartas} en sus cartas`);
+        interaction.reply(`${interaction.user} ha sumado ${cantidadCartas} en sus cartas`);
         
         if((blackjackGame.verNumeroJugadores(idCanal)-blackjackGame.verCantidadJugadoresCero(idCanal)) === blackjackGame.verNumeroJugadoresCartas(idCanal))
         {

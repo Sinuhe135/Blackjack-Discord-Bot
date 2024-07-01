@@ -22,27 +22,35 @@ module.exports = {
 
         
         if(!blackjackGame.estaJuegoIniciado(idCanal))
-            {
-                //interaction.reply("No hay ningun juego iniciado");
-                interaction.reply({
-                    content: "No hay ningun juego iniciado",
-                    ephemeral: true,
-                });
-                return;
-            }
-            
-            if(!blackjackGame.estaUsuarioEnJuego(idUsuario,idCanal) && !(blackjackGame.esDealer(idUsuario,idCanal)))
-                {
-                    interaction.reply({
-                        content: "No se ha unido al juego",
-                        ephemeral: true,
-                    });
-                    return;
-                }
+        {
+            //interaction.reply("No hay ningun juego iniciado");
+            interaction.reply({
+                content: "No hay ningun juego iniciado",
+                ephemeral: true,
+            });
+            return;
+        }
+        
+        if(!blackjackGame.estaUsuarioEnJuego(idUsuario,idCanal) && !(blackjackGame.esDealer(idUsuario,idCanal)))
+        {
+            interaction.reply({
+                content: "No se ha unido al juego",
+                ephemeral: true,
+            });
+            return;
+        }
 
-                if(!blackjackGame.esDealer(idUsuario, idCanal))
-                    {
-                        //interaction.reply("Solo el dealer puede terminar la partida");
+        if(blackjackGame.verEstadoJuego(idCanal) != 0)
+        {
+            interaction.reply({
+                content: "La partida ya ha comenzado",
+                ephemeral: true,
+            });
+            return;
+        }
+
+        if(!blackjackGame.esDealer(idUsuario, idCanal))
+        {
             interaction.reply({
                 content: "Solo el dealer puede comenzar la partida",
                 ephemeral: true,
@@ -51,14 +59,14 @@ module.exports = {
         }
         
         if(blackjackGame.verNumeroJugadores(idCanal) <= 0)
-            {
-                //interaction.reply("Solo el dealer puede terminar la partida");
-                interaction.reply({
-                    content: "Se necesita al menos un jugador",
-                    ephemeral: true,
-                });
-                return;
-            }
+        {
+            //interaction.reply("Solo el dealer puede terminar la partida");
+            interaction.reply({
+                content: "Se necesita al menos un jugador",
+                ephemeral: true,
+            });
+            return;
+        }
             
         if(interaction.options.get('fichas-iniciales'))
         {

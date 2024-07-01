@@ -53,7 +53,7 @@ module.exports =  (client,idCanal) =>{
 
         canal.send({embeds:[embed]});
 
-        for(const idUsuario in blackjackGame.verApuestasCanal(idCanal))
+        for(const idUsuario in blackjackGame.verFichasCanal(idCanal))
         {
             usuarios.push(idUsuario);
             fichas.push(blackjackGame.verFichasJugador(idUsuario,idCanal));
@@ -97,7 +97,7 @@ module.exports =  (client,idCanal) =>{
         if(blackjackGame.verNumeroJugadores(idCanal) === blackjackGame.verCantidadJugadoresCero(idCanal))
         {
             blackjackGame.terminarJuego(idCanal);
-            canal.send("Todos los jugadores se han dedado sin fichas\n\nPartida terminada. Gracias por jugar");
+            canal.send("Todos los jugadores se han quedado sin fichas\n\nPartida terminada. Gracias por jugar");
             return;
         }
 

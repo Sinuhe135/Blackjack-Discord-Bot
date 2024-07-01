@@ -21,7 +21,7 @@ module.exports =  (client,idCanal) =>{
         blackjackGame.cambiarEstadoJuego(idCanal,2);
         const embed = new EmbedBuilder()
             .setTitle(`Todos los jugadores han apostado`)
-            .setDescription(`Utilizar /cartas para indicar cuánto salió en tu tirada`)
+            .setDescription(`Utilizar /cartas para indicar la suma de tus cartas`)
             .setColor('Red');
 
         canal.send({embeds:[embed]});
