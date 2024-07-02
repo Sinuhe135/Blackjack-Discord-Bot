@@ -1,7 +1,7 @@
 const blackjackGame = require('../../blackjackUtils/blackjack.js');
 
 module.exports =(client) =>{
-    const limiteInactividad = 5*(60*1000); //primer numero son minutos
+    const limiteInactividad = 10*(60*1000); //primer numero son minutos
     const intervalo = 60*(1000); //primer numero son segundos
     
     let canal;

@@ -6,8 +6,8 @@ module.exports = (client,idCanal) =>{
 
     setTimeout(() => {
         const embed = new EmbedBuilder()
-            .setTitle(`Todos los jugadores han tirado`)
-            .setDescription(`<@${blackjackGame.verDealer(idCanal)}>, utiliza /cartas para indicar la suma de tus cartas`)
+            .setTitle(`Turno del dealer`)
+            .setDescription(`Todos los jugadores han tirado\n\n<@${blackjackGame.verDealer(idCanal)}>, utiliza /cartas para indicar la suma de tus cartas`)
             .setColor('Red');
 
         canal.send({embeds:[embed]});

@@ -24,12 +24,10 @@ module.exports = {
         blackjackGame.iniciarJuego(idUsuario,idCanal);
 
         const embed = new EmbedBuilder()
-            .setTitle("Se ha iniciado un juego de blackjack")
-            .setDescription(`${interaction.user} es el dealer\n\nUtilizar /unirse para entrar\nUtilizar /comenzar para empezar el juego`)
-            .setColor('Red');
+            .setTitle("Juego iniciado")
+            .setDescription(`Se ha iniciado un juego de blackjack\n${interaction.user} es el dealer\n\nUtilizar /unirse para entrar\nUtilizar /comenzar para empezar el juego`)
+            .setColor('DarkGreen');
 
         interaction.reply({embeds:[embed]});
-
-        //interaction.reply(``);
     },
 };
