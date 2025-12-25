@@ -27,13 +27,13 @@ A Discord bot that manages a multiplayer blackjack game with chip tracking and b
 
 ## Screenshots
 
-![image](https://github.com/Sinuhe135/CasinoBot/assets/165139497/ebb40b0f-32a1-4fdf-b2f7-20e303c1c39e)
-
-![image](https://github.com/Sinuhe135/CasinoBot/assets/165139497/949698be-2722-4911-bd7a-37bf550dbd6a)
-
-![image](https://github.com/Sinuhe135/CasinoBot/assets/165139497/3946cbd1-fc7f-4372-9faf-ff3a710e33fd)
-
-![image](https://github.com/Sinuhe135/CasinoBot/assets/165139497/1b35d9a1-037a-4869-a42c-1afbc0590c40)
+<img width="564" height="478" alt="image" src="https://github.com/user-attachments/assets/96ac890e-7867-48f8-8eed-d795521c92c9" />
+<br>
+<img width="379" height="319" alt="image" src="https://github.com/user-attachments/assets/05af9956-be6d-4985-b1b2-0e2603338dd4" />
+<br>
+<img width="413" height="336" alt="image" src="https://github.com/user-attachments/assets/4ad54842-119b-4c52-912f-4757e2719878" />
+<br>
+<img width="492" height="563" alt="image" src="https://github.com/user-attachments/assets/3c22dfa9-8a92-4f1e-9195-10fab7d321a5" />
 
 ## Try It Out
 
